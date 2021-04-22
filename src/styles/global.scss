@@ -5,6 +5,13 @@
   box-sizing: border-box;
 }
 :root {
+  // --white: #FFF;
+
+  // --gray-50: #F7F8FA;
+  // --gray-100: #E6E8EB;
+  // --gray-200: #AFB2B1;
+  // --gray-500: #808080;
+  // --gray-800: #494D4B;
   --white: #FFF;
 
   --gray-50: #F7F8FA;
@@ -15,10 +22,10 @@
 
   --green-500: #04D361;
   
-  --purple-300: #9F75FF;
-  --purple-400: #9164FA; 
-  --purple-500: #8257E5;
-  --purple-800: #6F48C9;
+  --purple-300: #7A99FF;
+  --purple-400: #7781E6; 
+  --purple-500: #707AE0;
+  --purple-800: #5E67C4;
 }
 @media (max-width: 1080px) {
   html {
