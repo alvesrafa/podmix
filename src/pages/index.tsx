@@ -3,6 +3,9 @@ import Image from 'next/image';
 import api from '../services/api';
 import { formatarData, secondsToTimeString } from '../helpers/utils';
 import styles from './home.module.scss';
+
+import Link from 'next/link';
+
 interface EpisodeProps {
   id: string;
   title: string;
@@ -10,7 +13,6 @@ interface EpisodeProps {
   publishedAt: string;
   duration: string;
   durationAsString: string;
-  description: string;
   url: string;
   thumbnail: string;
 }
@@ -35,7 +37,10 @@ const Home = (props: HomeProps) => {
                 objectFit="cover"
               />
               <div className={styles.episodeDetails}>
-                <a href="">{episode.title}</a>
+                <Link href={`/episodes/${episode.id}`}>
+                  <a>{episode.title}</a>
+                </Link>
+
                 <p>{episode.members}</p>
                 <span>{episode.publishedAt}</span>
                 <span>{episode.durationAsString}</span>
@@ -51,12 +56,14 @@ const Home = (props: HomeProps) => {
         <h2>Todos os episódios</h2>
         <table cellSpacing={0}>
           <thead>
-            <th></th>
-            <th>Podcast</th>
-            <th>Integrantes</th>
-            <th>Data</th>
-            <th>Duração</th>
-            <th></th>
+            <tr>
+              <th></th>
+              <th>Podcast</th>
+              <th>Integrantes</th>
+              <th>Data</th>
+              <th>Duração</th>
+              <th></th>
+            </tr>
           </thead>
           <tbody>
             {episodes.map((episode) => (
@@ -75,7 +82,9 @@ const Home = (props: HomeProps) => {
                   />
                 </td>
                 <td>
-                  <a href="">{episode.title}</a>
+                  <Link href={`/episodes/${episode.id}`}>
+                    <a>{episode.title}</a>
+                  </Link>
                 </td>
                 <td>{episode.members}</td>
                 <td
@@ -119,7 +128,6 @@ export const getStaticProps: GetStaticProps = async () => {
       publishedAt: formatarData(episode.published_at, 'd MMM y'),
       duration: Number(episode.file.duration),
       durationAsString: secondsToTimeString(episode.file.duration),
-      description: episode.description,
       url: episode.file.url,
       thumbnail: episode.thumbnail,
     };

@@ -3,8 +3,8 @@
   height: calc(100vh - 6.5rem);
   overflow-y: scroll;
   h2 {
-    margin-top: 3re;
-    margin-top: 1.5rem;
+    margin-top: 3rem;
+    margin-bottom: 1.5rem;
   }
 }
 
@@ -17,6 +17,7 @@
     li {
       background: var(--white);
       border: 1px solid var(--gray-100);
+      padding: 1.25rem;
       border-radius: 1.5rem;
       position: relative;
 
