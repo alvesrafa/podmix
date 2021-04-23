@@ -1,10 +1,11 @@
 import Link from 'next/link';
+import { useRouter } from 'next/router';
 import { GetStaticPaths, GetStaticProps } from 'next';
 import { formatarData, secondsToTimeString } from '../../helpers/utils';
 import api from '../../services/api';
 import styles from './episode.module.scss';
 import Image from 'next/image';
-import { useRouter } from 'next/dist/client/router';
+import { usePlayer } from '../../contexts/PlayerContext';
 
 interface EpisodeProps {
   id: string;
@@ -24,7 +25,10 @@ interface EpisodePageProps {
 export default function Episode(props: EpisodePageProps) {
   const { episode } = props;
   const router = useRouter();
-
+  const { play } = usePlayer();
+  if (router.isFallback) {
+    return <p>Carregando...</p>;
+  }
   return (
     <div className={styles.container}>
       <div className={styles.thumbContainer}>
@@ -39,7 +43,7 @@ export default function Episode(props: EpisodePageProps) {
           src={episode.thumbnail}
           objectFit="cover"
         />
-        <button>
+        <button onClick={() => play(episode)}>
           <img src="/play.svg" alt="Tocar episódio" />
         </button>
       </div>
@@ -58,9 +62,30 @@ export default function Episode(props: EpisodePageProps) {
 }
 
 export const getStaticPaths: GetStaticPaths = async () => {
+  // por convenção é bom passar os "episodios" que são mais acessados
+  const { data } = await api.get(`episodes`, {
+    params: {
+      _limit: 2,
+      _sort: 'published_at',
+      _order: 'desc',
+    },
+  });
+  // No caso estamos passando os ultios 2 episodios lançados
+  const paths = data.map((episode: any) => {
+    return {
+      params: {
+        slug: episode.id,
+      },
+    };
+  });
+
   return {
-    paths: [],
-    fallback: 'blocking',
+    paths,
+    // --------------------------- FALLBACK TYPES -------------------
+    // -> true: para carregamento no client
+    // -> 'blocking': pára carregamento no node
+    // -> false: para retornar status 400 caso n tenha passado no path
+    fallback: 'blocking', // -> incremental static regeneration
   };
 };
 

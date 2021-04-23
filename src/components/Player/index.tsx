@@ -1,11 +1,16 @@
+import { usePlayer } from '../../contexts/PlayerContext';
 import styles from './styles.module.scss';
 
 export function Player() {
+  const { currentEpisodeIndex, episodeList } = usePlayer();
+
+  const episode = episodeList[currentEpisodeIndex];
+
   return (
     <div className={styles.playerContainer}>
       <header>
         <img src="/playing.svg" alt="Tocando agora" />
-        <strong>Tocando agora</strong>
+        <strong>Tocando agora {episode?.title}</strong>
       </header>
 
       <div className={styles.emptyPlayer}>
@@ -28,7 +33,11 @@ export function Player() {
             <img src="/play-previous.svg" alt="Tocar anterior" />
           </button>
 
-          <button type="button" className={styles.playButton}>
+          <button
+            type="button"
+            className={styles.playButton}
+            onClick={() => {}}
+          >
             <img src="/play.svg" alt="Tocar" />
           </button>
 

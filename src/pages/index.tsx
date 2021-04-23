@@ -5,6 +5,7 @@ import { formatarData, secondsToTimeString } from '../helpers/utils';
 import styles from './home.module.scss';
 
 import Link from 'next/link';
+import { usePlayer } from '../contexts/PlayerContext';
 
 interface EpisodeProps {
   id: string;
@@ -22,6 +23,7 @@ interface HomeProps {
 }
 const Home = (props: HomeProps) => {
   const { episodes, latestEpisodes } = props;
+  const { play } = usePlayer();
   return (
     <div className={styles.container}>
       <section className={styles.latestEpisodes}>
@@ -45,7 +47,11 @@ const Home = (props: HomeProps) => {
                 <span>{episode.publishedAt}</span>
                 <span>{episode.durationAsString}</span>
               </div>
-              <button type="button" title="Tocar episódio">
+              <button
+                type="button"
+                title="Tocar episódio"
+                onClick={() => play(episode)}
+              >
                 <img src="/play-green.svg" alt="Tocar episódio" />
               </button>
             </li>
@@ -96,7 +102,11 @@ const Home = (props: HomeProps) => {
                 </td>
                 <td>{episode.durationAsString}</td>
                 <td>
-                  <button type="button" title="Tocar episódio">
+                  <button
+                    type="button"
+                    title="Tocar episódio"
+                    onClick={() => play(episode)}
+                  >
                     <img src="/play-green.svg" alt="Tocar episódio" />
                   </button>
                 </td>
