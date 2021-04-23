@@ -3,4 +3,8 @@
   main {
     flex:1;
   }
+  
+  @media (max-width: 1500px) {
+    flex-direction: column-reverse;
+  }
 }

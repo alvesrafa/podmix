@@ -6,6 +6,7 @@
     margin-top: 3rem;
     margin-bottom: 1.5rem;
   }
+  @media (max-width: 1500px) {height: calc(100vh - 6.5rem - 6.5rem);}
 }
 
 .latestEpisodes {
