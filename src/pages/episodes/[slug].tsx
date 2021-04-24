@@ -25,10 +25,12 @@ interface EpisodePageProps {
 export default function Episode(props: EpisodePageProps) {
   const { episode } = props;
   const router = useRouter();
-  const { play } = usePlayer();
+  const { play, isPlaying } = usePlayer();
+
   if (router.isFallback) {
     return <p>Carregando...</p>;
   }
+
   return (
     <div className={styles.container}>
       <div className={styles.thumbContainer}>
@@ -44,7 +46,11 @@ export default function Episode(props: EpisodePageProps) {
           objectFit="cover"
         />
         <button onClick={() => play(episode)}>
-          <img src="/play.svg" alt="Tocar episódio" />
+          {isPlaying ? (
+            <img src="/pause.svg" alt="Pausar" />
+          ) : (
+            <img src="/play.svg" alt="Tocar" />
+          )}
         </button>
       </div>
       <header>

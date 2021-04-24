@@ -23,13 +23,16 @@ interface HomeProps {
 }
 const Home = (props: HomeProps) => {
   const { episodes, latestEpisodes } = props;
-  const { play } = usePlayer();
+  const { playList } = usePlayer();
+
+  const episodeList = [...latestEpisodes, ...episodes];
+
   return (
     <div className={styles.container}>
       <section className={styles.latestEpisodes}>
         <h2>Ultimos lançamentos</h2>
         <ul>
-          {latestEpisodes.map((episode) => (
+          {latestEpisodes.map((episode, index) => (
             <li key={episode.id}>
               <Image
                 width={192}
@@ -50,7 +53,7 @@ const Home = (props: HomeProps) => {
               <button
                 type="button"
                 title="Tocar episódio"
-                onClick={() => play(episode)}
+                onClick={() => playList(episodeList, index)}
               >
                 <img src="/play-green.svg" alt="Tocar episódio" />
               </button>
@@ -72,7 +75,7 @@ const Home = (props: HomeProps) => {
             </tr>
           </thead>
           <tbody>
-            {episodes.map((episode) => (
+            {episodes.map((episode, index) => (
               <tr key={episode.id}>
                 <td
                   style={{
@@ -105,7 +108,7 @@ const Home = (props: HomeProps) => {
                   <button
                     type="button"
                     title="Tocar episódio"
-                    onClick={() => play(episode)}
+                    onClick={() => playList(episodeList, index + 2)}
                   >
                     <img src="/play-green.svg" alt="Tocar episódio" />
                   </button>

@@ -13,6 +13,12 @@ export function Player() {
     isPlaying,
     togglePlay,
     setPlayingState,
+    playNext,
+    playPrevious,
+    isLooping,
+    toggleLooping,
+    isShuffling,
+    toggleShuffling,
   } = usePlayer();
 
   const audioRef = useRef<HTMLAudioElement>(null);
@@ -59,6 +65,7 @@ export function Player() {
             ref={audioRef}
             src={episode.url}
             autoPlay
+            loop={isLooping}
             onPlay={() => setPlayingState(true)}
             onPause={() => setPlayingState(false)}
           />
@@ -80,10 +87,19 @@ export function Player() {
           <span>00:00</span>
         </div>
         <div className={styles.buttons}>
-          <button type="button" disabled={!episode}>
+          <button
+            type="button"
+            disabled={!episode || episodeList.length === 1}
+            className={isShuffling ? styles.isActive : ''}
+            onClick={toggleShuffling}
+          >
             <img src="/shuffle.svg" alt="Embaralhar" />
           </button>
-          <button type="button" disabled={!episode}>
+          <button
+            type="button"
+            disabled={!episode || episodeList.length === 1}
+            onClick={playPrevious}
+          >
             <img src="/play-previous.svg" alt="Tocar anterior" />
           </button>
 
@@ -100,10 +116,20 @@ export function Player() {
             )}
           </button>
 
-          <button type="button" disabled={!episode}>
+          <button
+            type="button"
+            disabled={!episode || episodeList.length === 1}
+            onClick={playNext}
+          >
             <img src="/play-next.svg" alt="Tocar próxima" />
           </button>
-          <button type="button" disabled={!episode}>
+
+          <button
+            type="button"
+            disabled={!episode}
+            className={isLooping ? styles.isActive : ''}
+            onClick={toggleLooping}
+          >
             <img src="/repeat.svg" alt="Repetir" />
           </button>
         </div>
