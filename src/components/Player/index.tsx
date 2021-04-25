@@ -1,10 +1,12 @@
+import { useEffect, useRef, useState } from 'react';
 import Image from 'next/image';
-import { usePlayer } from '../../contexts/PlayerContext';
-import styles from './styles.module.scss';
 import Slider from 'rc-slider';
 
+import { usePlayer } from '../../contexts/PlayerContext';
+import { secondsToTimeString } from '../../helpers/utils';
+
+import styles from './styles.module.scss';
 import 'rc-slider/assets/index.css';
-import { useEffect, useRef } from 'react';
 
 export function Player() {
   const {
@@ -20,8 +22,9 @@ export function Player() {
     isShuffling,
     toggleShuffling,
   } = usePlayer();
-
   const audioRef = useRef<HTMLAudioElement>(null);
+
+  const [progress, setProgress] = useState(0);
 
   const episode = episodeList[currentEpisodeIndex];
 
@@ -35,6 +38,22 @@ export function Player() {
     }
   }, [isPlaying]);
 
+  const setupProgress = () => {
+    if (!audioRef?.current) return;
+
+    audioRef.current.currentTime = 0;
+
+    audioRef.current.addEventListener('timeupdate', () => {
+      const time = Math.floor(audioRef.current?.currentTime ?? 0);
+      setProgress(time);
+    });
+  };
+  const handleSeek = (amount: number) => {
+    if (!audioRef?.current) return;
+
+    audioRef.current.currentTime = amount;
+    setProgress(amount);
+  };
   return (
     <div className={styles.playerContainer}>
       <header>
@@ -65,26 +84,31 @@ export function Player() {
             ref={audioRef}
             src={episode.url}
             autoPlay
+            onEnded={playNext}
             loop={isLooping}
             onPlay={() => setPlayingState(true)}
             onPause={() => setPlayingState(false)}
+            onLoadedMetadataCapture={setupProgress}
           />
         )}
 
         <div className={styles.progress}>
-          <span>00:00</span>
+          <span>{secondsToTimeString(progress)}</span>
           <div className={styles.slider}>
             {episode ? (
               <Slider
                 trackStyle={{ backgroundColor: '#04d361' }}
                 railStyle={{ backgroundColor: '#5E67C4' }}
                 handleStyle={{ borderWidth: 4, borderColor: '#5E67C4' }}
+                max={episode.duration}
+                value={progress}
+                onChange={handleSeek}
               />
             ) : (
               <div className={styles.emptySlider} />
             )}
           </div>
-          <span>00:00</span>
+          <span>{secondsToTimeString(episode?.duration ?? 0)}</span>
         </div>
         <div className={styles.buttons}>
           <button

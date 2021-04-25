@@ -6,7 +6,7 @@ import api from '../../services/api';
 import styles from './episode.module.scss';
 import Image from 'next/image';
 import { usePlayer } from '../../contexts/PlayerContext';
-
+import Head from 'next/head';
 interface EpisodeProps {
   id: string;
   title: string;
@@ -33,6 +33,9 @@ export default function Episode(props: EpisodePageProps) {
 
   return (
     <div className={styles.container}>
+      <Head>
+        <title>{episode.title} | PodMix</title>
+      </Head>
       <div className={styles.thumbContainer}>
         <Link href="/">
           <button>

@@ -1,12 +1,14 @@
 import { GetStaticProps } from 'next';
 import Image from 'next/image';
-import api from '../services/api';
-import { formatarData, secondsToTimeString } from '../helpers/utils';
-import styles from './home.module.scss';
-
 import Link from 'next/link';
-import { usePlayer } from '../contexts/PlayerContext';
+import Head from 'next/head';
 
+import { formatarData, secondsToTimeString } from '../helpers/utils';
+import { usePlayer } from '../contexts/PlayerContext';
+import api from '../services/api';
+import styles from './home.module.scss';
+import { useRouter } from 'next/router';
+import { useEffect } from 'react';
 interface EpisodeProps {
   id: string;
   title: string;
@@ -29,6 +31,9 @@ const Home = (props: HomeProps) => {
 
   return (
     <div className={styles.container}>
+      <Head>
+        <title>Página inicial | PodMix</title>
+      </Head>
       <section className={styles.latestEpisodes}>
         <h2>Ultimos lançamentos</h2>
         <ul>
